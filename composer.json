@@ -1,1 +1,1 @@
-{"name":"samsonos/twitter","author":"Vitaly Iegorov <egorov@samsonos.com>","version":"0.0.1","require":{"activerecord":"*.*.*","oauth":"*.*.*"}}
+{"name":"samsonos/twitter","author":"Vitaly Iegorov <egorov@samsonos.com>","version":"0.0.1","require":{"activerecord":"*.*.*","oauth":"*.*.*","social":"*.*.*"}}

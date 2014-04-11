@@ -12,7 +12,7 @@ namespace samson\social;
  * @copyright 2013 SamsonOS
  * @version
  */
-class Twitter extends Core
+class Twitter extends Network
 {
     public $id = 'twitter';
 
