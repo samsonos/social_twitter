@@ -47,27 +47,19 @@ class Twitter extends Core
 
     public function __token()
     {
-       /* $code = & $_GET['code'];
-        if (isset($code)) {
+        /* Create a TwitterOauth object with consumer/user tokens. */
+        $connection = new TwitterOAuth($this->appCode, $this->appSecret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
 
-            // Send http get request to retrieve VK code
-            $token = $this->post($this->tokenURL, array(
-                'client_id' => $this->appCode,
-                'client_secret' => $this->appSecret,
-                'code' => $code,
-                'redirect_uri' => $this->returnURL(),
-                'grant_type'    => 'authorization_code' // google add grant type
-            ));
+        /* Request access tokens from twitter */
+        $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
 
-            // take user's information using access token
-            if (isset($token['access_token'])) {
-                $userInfo = $this->get($this->userURL, array(
-                    'access_token' => $token['access_token']
-                ));
-                $this->setUser($userInfo);
-                //  trace($this->user);
-            }
-        }*/
+        /* Get logged in user to help with tests. */
+        $user = $connection->get('account/verify_credentials');
+
+        // Covert user data to generic user object
+        if ($user) {
+            $this->setUser((array)$user);
+        }
 
         parent::__token();
     }
@@ -76,12 +68,13 @@ class Twitter extends Core
     {
         $this->user = new User();
 
+        // Separate name and second name
+        $name = explode(' ', $user['name']);
+
         $this->user->birthday = isset($user['birthday'])?$user['birthday']:0;
-        $this->user->email = $user['email'];
-        $this->user->gender = $user['gender'];
-        $this->user->locale = $user['locale'];
-        $this->user->name = $user['given_name'];
-        $this->user->surname = $user['family_name'];
+        $this->user->locale = $user['lang'];
+        $this->user->name = $name[0];
+        $this->user->surname = isset($name[1]) ? $name[1] : '';
         $this->user->socialID = $user['id'];
 
         parent::setUser($user);
