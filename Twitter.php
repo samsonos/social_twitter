@@ -12,13 +12,15 @@ namespace samson\social;
  * @copyright 2013 SamsonOS
  * @version
  */
-class Twitter extends Network
+class Twitter extends \samson\social\network\Network
 {
     public $id = 'twitter';
 
     public $requirements = array('activerecord', 'oauth');
 
     public $dbIdField = 'tw_id';
+	
+	public $requirements = array('socialnetwork');
 
     public function __HANDLER()
     {
