@@ -16,11 +16,9 @@ class Twitter extends \samson\social\network\Network
 {
     public $id = 'twitter';
 
-    public $requirements = array('activerecord', 'oauth');
+    public $requirements = array('socialnetwork', 'oauth');
 
     public $dbIdField = 'tw_id';
-	
-	public $requirements = array('socialnetwork');
 
     public function __HANDLER()
     {
