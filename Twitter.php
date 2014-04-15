@@ -4,7 +4,7 @@
  * on 10.04.14 at 17:17
  */
 
-namespace samson\social\twitter;
+namespace samson\social;
 
 /**
  *
