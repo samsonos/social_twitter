@@ -76,6 +76,7 @@ class Twitter extends \samson\social\Network
         $this->user->name = $name[0];
         $this->user->surname = isset($name[1]) ? $name[1] : '';
         $this->user->socialID = $user['id'];
+        $this->user->photo = $user['profile_image_url'];
 
         parent::setUser($user);
     }
