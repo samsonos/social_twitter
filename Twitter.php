@@ -64,21 +64,21 @@ class Twitter extends \samson\social\Network
         parent::__token();
     }
 
-    public function setUser(array $user)
+    protected function setUser(array $userData, & $user = null)
     {
-        $this->user = new User();
+        $user = new User();
 
         // Separate name and second name
-        $name = explode(' ', $user['name']);
+        $name = explode(' ', $userData['name']);
 
-        $this->user->birthday = isset($user['birthday'])?$user['birthday']:0;
-        $this->user->locale = $user['lang'];
-        $this->user->name = $name[0];
-        $this->user->surname = isset($name[1]) ? $name[1] : '';
-        $this->user->socialID = $user['id'];
-        $this->user->photo = $user['profile_image_url'];
+        $user->birthday = isset($userData['birthday'])?$userData['birthday']:0;
+        $user->locale = $userData['lang'];
+        $user->name = $userData[0];
+        $user->surname = isset($userData[1]) ? $userData[1] : '';
+        $user->socialID = $userData['id'];
+        $user->photo = $userData['profile_image_url'];
 
-        parent::setUser($user);
+        parent::setUser($userData, $user);
     }
 }
  
