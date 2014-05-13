@@ -28,7 +28,7 @@ class Twitter extends \samson\social\Network
         $connection = new TwitterOAuth($this->appCode, $this->appSecret, $this->token['oauth_token'], $this->token['oauth_token_secret']);
 
         /* Get logged in user to help with tests. */
-        $request = (array)$connection->get('friends/list');
+        $request = (array)$connection->get('friends/list', array('include_user_entities' => false));
 
         // Pointer to response object
         $response = & $request['users'];
@@ -41,6 +41,8 @@ class Twitter extends \samson\social\Network
 
                 // Fill user object with data
                 $this->setUser((array)$friendData, $friend);
+
+                elapsed($friend);
 
                 // Add filled object to result collection
                 $result[] = $friend;
@@ -107,8 +109,8 @@ class Twitter extends \samson\social\Network
 
         $user->birthday = isset($userData['birthday'])?$userData['birthday']:0;
         $user->locale = $userData['lang'];
-        $user->name = isset($userData[0]) ? $userData[0] : $userData;
-        $user->surname = isset($userData[1]) ? $userData[1] : '';
+        $user->name = isset($name[0]) ? $name[0] : $name;
+        $user->surname = isset($name[1]) ? $name[1] : '';
         $user->socialID = $userData['id'];
         $user->photo = $userData['profile_image_url'];
 
