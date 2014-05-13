@@ -20,6 +20,36 @@ class Twitter extends \samson\social\Network
 
     public $dbIdField = 'tw_id';
 
+    public function & friends($count = null, $offset = null)
+    {
+        $result = array();
+
+        /* Create a TwitterOauth object with consumer/user tokens. */
+        $connection = new TwitterOAuth($this->appCode, $this->appSecret, $this->token['oauth_token'], $this->token['oauth_token_secret']);
+
+        /* Get logged in user to help with tests. */
+        $request = (array)$connection->get('friends/list');
+
+        // Pointer to response object
+        $response = & $request['users'];
+
+        // If we have received friends list
+        if (isset($response) && is_array($response)) {
+            foreach ($response as $friendData) {
+                // Create new user object
+                $friend = new User();
+
+                // Fill user object with data
+                $this->setUser((array)$friendData, $friend);
+
+                // Add filled object to result collection
+                $result[] = $friend;
+            }
+        }
+
+        return $result;
+    }
+
     public function __HANDLER()
     {
         /* Build TwitterOAuth object with client credentials. */
@@ -53,6 +83,10 @@ class Twitter extends \samson\social\Network
         /* Request access tokens from twitter */
         $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
 
+        // Save access token to session
+        $this->token = $access_token;
+        $_SESSION[self::SESSION_PREFIX.'_'.$this->id] = $access_token;
+
         /* Get logged in user to help with tests. */
         $user = $connection->get('account/verify_credentials');
 
@@ -73,7 +107,7 @@ class Twitter extends \samson\social\Network
 
         $user->birthday = isset($userData['birthday'])?$userData['birthday']:0;
         $user->locale = $userData['lang'];
-        $user->name = $userData[0];
+        $user->name = isset($userData[0]) ? $userData[0] : $userData;
         $user->surname = isset($userData[1]) ? $userData[1] : '';
         $user->socialID = $userData['id'];
         $user->photo = $userData['profile_image_url'];
