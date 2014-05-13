@@ -20,6 +20,17 @@ class Twitter extends \samson\social\Network
 
     public $dbIdField = 'tw_id';
 
+    public function message($userID, $text)
+    {
+        /* Create a TwitterOauth object with consumer/user tokens. */
+        $connection = new TwitterOAuth($this->appCode, $this->appSecret, $this->token['oauth_token'], $this->token['oauth_token_secret']);
+
+        /* Get logged in user to help with tests. */
+        $request = (array)$connection->post('direct_messages/new', array('user_id' => $userID, 'text' => $text));
+
+        return true;
+    }
+
     public function & friends($count = null, $offset = null)
     {
         $result = array();
@@ -41,8 +52,6 @@ class Twitter extends \samson\social\Network
 
                 // Fill user object with data
                 $this->setUser((array)$friendData, $friend);
-
-                elapsed($friend);
 
                 // Add filled object to result collection
                 $result[] = $friend;
