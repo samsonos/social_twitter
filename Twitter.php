@@ -4,7 +4,7 @@
  * on 10.04.14 at 17:17
  */
 
-namespace samson\social;
+namespace samson\social\twitter;
 
 /**
  *
@@ -12,7 +12,7 @@ namespace samson\social;
  * @copyright 2013 SamsonOS
  * @version
  */
-class Twitter extends \samson\social\Network
+class Twitter extends \samson\social\network\Network
 {
     public $id = 'twitter';
 
